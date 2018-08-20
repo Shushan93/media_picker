@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "294551043945",
+    "firebase_url": "https://digitectask-f4cd5.firebaseio.com",
+    "project_id": "digitectask-f4cd5",
+    "storage_bucket": "digitectask-f4cd5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294551043945:android:f572ad8a4f03a351",
+        "android_client_info": {
+          "package_name": "com.dev.digitectask"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "294551043945-jrlekcqjusq3oq15q9ghsd3c136gspa0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOJrBTl1QtVxvzULdB3A9mD8TdltidCzY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -44,12 +44,11 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> mTmpFiles; // keep all compressed files here for removing after closing app
     private StorageReference mStorageReference;
 
-    private Disposable mDisposable;
+    private Disposable mDisposable, mConverterDisposable;
+    private SelectedFilesAdapter mAdapter;
 
     @BindView(R.id.selected_files_rv)
     RecyclerView mSelectedFilesRv;
-    private Disposable mConverterDisposable;
-    private SelectedFilesAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             mFiles = savedInstanceState.getStringArrayList(SELECTED_FILES);
         }
-        initRecyclerView();
+        initOrUpdateRecyclerView();
     }
 
-    private void initRecyclerView() {
+    private void initOrUpdateRecyclerView() {
         if (mFiles != null) {
             if (mAdapter == null) {
                 mSelectedFilesRv.setHasFixedSize(true);
@@ -120,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
         outState.putStringArrayList(SELECTED_FILES, mFiles);
     }
 
+    /**
+     * This function opens media picker library for choosing files to upload
+     */
     private void openChooser() {
         Intent intent = Gallery.newIntent(this, getString(R.string.select_media),
                 Gallery.IMAGE_AND_VIDEO, Constants.MAX_SELECTION);
@@ -134,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 showMessage(R.string.permission_denied);
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
             } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -176,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                         .subscribe(list -> {
                             closeProgress(progressDialog);
                             mFiles = list;
-                            initRecyclerView();
+                            initOrUpdateRecyclerView();
                         });
             }
         }

@@ -22,10 +22,6 @@ import com.dev.digitectask.video_compress.VideoResolutionChanger;
 import com.erikagtierrez.multiple_media_picker.Gallery;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-//
-//import org.ffmpeg.android.Clip;
-//import org.ffmpeg.android.FfmpegController;
-//import org.ffmpeg.android.ShellUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int OPEN_MEDIA_PICKER = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 45;
 
-    private ArrayList<String> mFiles;
-    private ArrayList<String> mTmpFiles;
-    private StorageReference storageReference;
+    private ArrayList<String> mFiles; // all selected files
+    private ArrayList<String> mTmpFiles; // keep all compressed files here for removing after closing app
+    private StorageReference mStorageReference;
 
     private Disposable mDisposable;
 
@@ -61,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        mStorageReference = storage.getReference();
         if (savedInstanceState != null) {
             mFiles = savedInstanceState.getStringArrayList(SELECTED_FILES);
         }
@@ -85,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     public void onSelectMediaBtnClick() {
         if (mFiles != null && mFiles.size() != 0) {
             final ProgressDialog progressDialog = showProgressDialog(getString(R.string.uploading_message));
-            mDisposable = FirebaseHelper.uploadImage(mFiles, storageReference)
+            mDisposable = FirebaseHelper.uploadImage(mFiles, mStorageReference)
                     .subscribe(result -> {
                         closeProgress(progressDialog);
                         showMessage(result ? R.string.success_message : R.string.failed_message);
@@ -209,10 +205,9 @@ public class MainActivity extends AppCompatActivity {
                                     new VideoResolutionChanger().changeResolution(new File(path));
                             files.set(i, pathToReEncodedFile);
                             addForRemoving(pathToReEncodedFile);
-                        } catch (Throwable t) {
+                        } catch (Throwable ignored) {
 
                         }
-
                     }
                 }
             }

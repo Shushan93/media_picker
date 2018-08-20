@@ -18,6 +18,7 @@ import com.dev.digitectask.adapter.SelectedFilesAdapter;
 import com.dev.digitectask.utils.Constants;
 import com.dev.digitectask.utils.ImageCompressor;
 import com.dev.digitectask.utils.Utils;
+import com.dev.digitectask.video_compress.VideoResolutionChanger;
 import com.erikagtierrez.multiple_media_picker.Gallery;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -26,6 +27,7 @@ import com.google.firebase.storage.StorageReference;
 //import org.ffmpeg.android.FfmpegController;
 //import org.ffmpeg.android.ShellUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -202,55 +204,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else {
                     if (Utils.isResolutionExceeded(path, Constants.MAX_VIDEO_W, Constants.MAX_VIDEO_H)) {
-                    /*    // todo compress video
-                        // input source
-                        final Clip clip_in = new Clip(path);
-
-                        Activity activity = MainActivity.this;
-                        File fileTmp = activity.getCacheDir();
-                        File fileAppRoot = new File(activity.getApplicationInfo().dataDir);
-
-                        final Clip clip_out = new Clip("/storage/emulated/0/Developer/result2.mp4");
-                        //put flags in clip
-                        clip_out.videoFps = "30";
-                        clip_out.width = Constants.MAX_VIDEO_W;
-                        clip_out.height = Constants.MAX_VIDEO_H;
-                        clip_out.videoCodec = "libx264";
-                        clip_out.audioCodec = "copy";
-
                         try {
-//                            FfmpegController fc = new FfmpegController(fileTmp, fileAppRoot);
-                            FfmpegController fc = new FfmpegController(this, fileAppRoot);
-                            fc.processVideo(clip_in, clip_out, false, new ShellUtils.ShellCallback() {
+                            String pathToReEncodedFile =
+                                    new VideoResolutionChanger().changeResolution(new File(path));
+                            files.set(i, pathToReEncodedFile);
+                            addForRemoving(pathToReEncodedFile);
+                        } catch (Throwable t) {
 
-                                @Override
-                                public void shellOut(String shellLine) {
-                                    System.out.println("MIX> " + shellLine);
-                                }
+                        }
 
-                                @Override
-                                public void processComplete(int exitValue) {
-
-                                    if (exitValue != 0) {
-                                        System.err.println("concat non-zero exit: " + exitValue);
-                                        Log.d("ffmpeg", "Compilation error. FFmpeg failed");
-                                        Toast.makeText(MainActivity.this, "result: ffmpeg failed", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        if (new File("/storage/emulated/0/Developer/result2.mp4").exists()) {
-                                            Log.d("ffmpeg", "Success file:" + "/storage/emulated/0/Developer/result2.mp4");
-                                        }
-                                    }
-                                }
-                            });
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }*/
                     }
                 }
             }

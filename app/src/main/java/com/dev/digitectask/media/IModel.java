@@ -1,4 +1,4 @@
-package com.dev.digitectask;
+package com.dev.digitectask.media;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import io.reactivex.Single;
 
-public interface BaseModel {
+public interface IModel {
 
     Single<Boolean> uploadImage(final ArrayList<String> filePaths, final StorageReference storageReference);
     Single<ArrayList<String>> getDisposableForCheckingFiles(Context context, ArrayList<String> files);

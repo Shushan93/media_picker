@@ -1,4 +1,4 @@
-package com.dev.digitectask;
+package com.dev.digitectask.media;
 
 import android.content.Context;
 import android.net.Uri;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import io.reactivex.Single;
 
-public class ModelImpl implements BaseModel {
+public class ModelImpl implements IModel {
 
     private ArrayList<String> mTmpFiles; // keep all compressed files here for removing after closing app
 

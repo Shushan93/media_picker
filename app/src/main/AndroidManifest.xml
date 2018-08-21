@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <!--tools:replace="android:icon">-->
-        <activity android:name=".MainActivity">
+        <activity android:name=".media.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,4 +1,4 @@
-package com.dev.digitectask;
+package com.dev.digitectask.media;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.dev.digitectask.R;
 import com.dev.digitectask.adapter.SelectedFilesAdapter;
 import com.dev.digitectask.utils.Constants;
 import com.erikagtierrez.multiple_media_picker.Gallery;
@@ -23,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements BaseView {
+public class MainActivity extends AppCompatActivity implements IView {
 
     private static final String SELECTED_FILES = "selected_files";
     private static final int OPEN_MEDIA_PICKER = 1;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements BaseView {
     private SelectedFilesAdapter mAdapter;
 
     private ProgressDialog mProgressDialog;
-    private BasePresenter mPresenter;
+    private IPresenter mPresenter;
 
     @BindView(R.id.selected_files_rv)
     RecyclerView mSelectedFilesRv;

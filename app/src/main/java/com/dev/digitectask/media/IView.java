@@ -1,10 +1,10 @@
-package com.dev.digitectask;
+package com.dev.digitectask.media;
 
 import android.support.annotation.StringRes;
 
 import java.util.ArrayList;
 
-public interface BaseView {
+public interface IView {
 
     void showProgressDialog(@StringRes int message);
     void stopProgressDialog();

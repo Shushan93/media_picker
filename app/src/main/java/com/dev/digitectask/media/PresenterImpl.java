@@ -1,7 +1,8 @@
-package com.dev.digitectask;
+package com.dev.digitectask.media;
 
 import android.content.Context;
 
+import com.dev.digitectask.R;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -11,15 +12,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class PresenterImpl implements BasePresenter {
+public class PresenterImpl implements IPresenter {
 
-    private BaseView mView;
-    private BaseModel mModel;
+    private IView mView;
+    private IModel mModel;
     private StorageReference mStorageReference;
     private Disposable mUploadDisposable, mConverterDisposable;
 
 
-    PresenterImpl(BaseView mView) {
+    PresenterImpl(IView mView) {
         this.mView = mView;
         mModel = new ModelImpl();
         FirebaseStorage storage = FirebaseStorage.getInstance();

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity implements BaseView {
 
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements BaseView {
 
     private ArrayList<String> mFiles = new ArrayList<>(); // all selected files
 
-    private Disposable mDisposable, mConverterDisposable;
     private SelectedFilesAdapter mAdapter;
 
     private ProgressDialog mProgressDialog;
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements BaseView {
     @OnClick(R.id.select_media_btn)
     public void onSelectMediaBtnClick() {
         if (mFiles.size() != 0) {
-            mDisposable = mPresenter.uploadToFirebase(mFiles);
+            mPresenter.uploadToFirebase(mFiles);
         } else {
             if (hasPermission()) {
                 openChooser();
@@ -90,9 +88,7 @@ public class MainActivity extends AppCompatActivity implements BaseView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPresenter.removeTempFiles();
-        if (mDisposable != null) mDisposable.dispose();
-        if (mConverterDisposable != null) mConverterDisposable.dispose();
+        mPresenter.onActivityDestroy();
     }
 
     @Override
@@ -157,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements BaseView {
         if (requestCode == OPEN_MEDIA_PICKER) {
             if (resultCode == RESULT_OK && data != null) {
                 mFiles = data.getStringArrayListExtra("result");
-                mConverterDisposable = mPresenter.checkResolutionsAndCompress(this, mFiles);
+                mPresenter.checkResolutionsAndCompress(this, mFiles);
             }
         }
     }

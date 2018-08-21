@@ -16,6 +16,8 @@ public class PresenterImpl implements BasePresenter {
     private BaseView mView;
     private BaseModel mModel;
     private StorageReference mStorageReference;
+    private Disposable mUploadDisposable, mConverterDisposable;
+
 
     PresenterImpl(BaseView mView) {
         this.mView = mView;
@@ -25,9 +27,9 @@ public class PresenterImpl implements BasePresenter {
     }
 
     @Override
-    public Disposable uploadToFirebase(ArrayList<String> files) {
+    public void uploadToFirebase(ArrayList<String> files) {
         mView.showProgressDialog(R.string.uploading_message);
-        return mModel.uploadImage(files, mStorageReference)
+        mUploadDisposable = mModel.uploadImage(files, mStorageReference)
                 .subscribe(result -> {
                     mView.stopProgressDialog();
                     mView.showMessage(result ? R.string.success_message : R.string.failed_message);
@@ -35,10 +37,10 @@ public class PresenterImpl implements BasePresenter {
     }
 
     @Override
-    public Disposable checkResolutionsAndCompress(Context context, ArrayList<String> files) {
+    public void checkResolutionsAndCompress(Context context, ArrayList<String> files) {
 
         mView.showProgressDialog(R.string.compressing_message);
-        return mModel.getDisposableForCheckingFiles(context, files)
+        mConverterDisposable = mModel.getDisposableForCheckingFiles(context, files)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(list -> {
@@ -48,7 +50,10 @@ public class PresenterImpl implements BasePresenter {
     }
 
     @Override
-    public void removeTempFiles() {
+    public void onActivityDestroy() {
+
         mModel.removeTempFiles();
+        if (mUploadDisposable != null) mUploadDisposable.dispose();
+        if (mConverterDisposable != null) mConverterDisposable.dispose();
     }
 }

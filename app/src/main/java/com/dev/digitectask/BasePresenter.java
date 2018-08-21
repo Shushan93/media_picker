@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import io.reactivex.disposables.Disposable;
 
 public interface BasePresenter {
-    Disposable uploadToFirebase(ArrayList<String> files);
-    Disposable checkResolutionsAndCompress(Context context, ArrayList<String> files);
+    void uploadToFirebase(ArrayList<String> files);
+    void checkResolutionsAndCompress(Context context, ArrayList<String> files);
 
-    void removeTempFiles();
+    void onActivityDestroy();
 }

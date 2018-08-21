@@ -53,10 +53,9 @@ public class MainActivity extends AppCompatActivity implements BaseView {
         updateView(mFiles);
     }
 
-
     @OnClick(R.id.select_media_btn)
     public void onSelectMediaBtnClick() {
-        if (mFiles != null && mFiles.size() != 0) {
+        if (mFiles.size() != 0) {
             mDisposable = mPresenter.uploadToFirebase(mFiles);
         } else {
             if (hasPermission()) {
@@ -64,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements BaseView {
             }
         }
     }
-
 
     @Override
     public void showProgressDialog(int message) {
@@ -83,14 +81,10 @@ public class MainActivity extends AppCompatActivity implements BaseView {
     @Override
     public void updateView(ArrayList<String> files) {
         mFiles = files;
-        if (mAdapter == null) {
-            mSelectedFilesRv.setHasFixedSize(true);
-            mSelectedFilesRv.setLayoutManager(new LinearLayoutManager(this));
-            mAdapter = new SelectedFilesAdapter(this, mFiles);
-            mSelectedFilesRv.setAdapter(mAdapter);
-        } else {
-            mAdapter.notifyDataSetChanged();
-        }
+        mSelectedFilesRv.setHasFixedSize(true);
+        mSelectedFilesRv.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new SelectedFilesAdapter(this, mFiles);
+        mSelectedFilesRv.setAdapter(mAdapter);
     }
 
     @Override
@@ -163,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements BaseView {
         if (requestCode == OPEN_MEDIA_PICKER) {
             if (resultCode == RESULT_OK && data != null) {
                 mFiles = data.getStringArrayListExtra("result");
-                showProgressDialog(R.string.compressing_message);
                 mConverterDisposable = mPresenter.checkResolutionsAndCompress(this, mFiles);
             }
         }
